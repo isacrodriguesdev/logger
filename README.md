@@ -88,7 +88,7 @@ The `ConsoleLog` target is included by default and does not need to be explicitl
 
 Creates a new instance of the Logger class.
 
-#### `notify(targets: string[], data: ILogger.Payload): void`
+#### `notify(types: string[], payload: ILogger.Payload): void`
 
 Notifies the specified logger targets with the log data.
 
