@@ -1,0 +1,6 @@
+node_modules/
+src/
+example/
+index.ts
+test.ts
+.gitignore

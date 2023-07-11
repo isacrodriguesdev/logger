@@ -1,0 +1,31 @@
+{
+  "name": "@isacrodriguesdev/logger",
+  "version": "0.0.3",
+  "description": "Logger is a logging library for handling log messages and notifying logger targets",
+  "main": "lib/index.js",
+  "scripts": {
+    "start": "tsc && node lib/index.js",
+    "publish": "tsc && npm publish --access public",
+    "build": "node esbuild.js"
+  },
+  "author": "isacrodriguesdev",
+  "license": "ISC",
+  "keywords": [
+    "logger",
+    "logging",
+    "log",
+    "log message",
+    "log target",
+    "log level",
+    "log level filter",
+    "log message filter",
+    "log message formatter",
+    "log",
+    "notify"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^20.3.2",
+    "typescript": "^4.9.5"
+  }
+}
