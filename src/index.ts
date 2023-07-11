@@ -21,18 +21,3 @@ export class Logger implements ILogger {
     }
   }
 }
-
-export const logger = new Logger();
-
-class KafkaLog implements ILoggerTarget {
-  notify(data: ILogger.Payload): void {
-    console.log("KafkaLog", data);
-  }
-}
-
-logger.register("kafka", new KafkaLog());
-
-logger.notify(["console", "kafka"], {
-  level: "info",
-  message: "Hello World",
-});
