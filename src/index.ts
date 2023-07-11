@@ -1,23 +1,23 @@
 import { ConsoleLog } from "./loggers/console-log";
-import { ILogger, ILoggerTarget } from "./types";
+import { ILogger } from "./types";
 
-export { ConsoleLog, ILogger, ILoggerTarget };
+export { ILogger };
 
 export class Logger implements ILogger {
-  private loggerTarget: Map<string, ILoggerTarget> = new Map([["console", new ConsoleLog()]]);
+  private static observers: Map<string, ILogger.Observer> = new Map([["console", new ConsoleLog()]]);
 
-  notify(targets: string[], data: ILogger.Payload): void {
-    for (const target of targets) {
-      const logger = this.loggerTarget.get(target);
+  notify(types: string[], payload: ILogger.Payload): void {
+    for (const type of types) {
+      const logger = Logger.observers.get(type);
       if (logger) {
-        logger.notify(data);
+        logger.update(payload);
       }
     }
   }
 
-  register(type: string, logger: ILoggerTarget): void {
-    if (!this.loggerTarget.has(type)) {
-      this.loggerTarget.set(type, logger);
+  attach(type: string, observer: ILogger.Observer): void {
+    if (!Logger.observers.has(type)) {
+      Logger.observers.set(type, observer);
     }
   }
 }

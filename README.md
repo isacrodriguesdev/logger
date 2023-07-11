@@ -16,14 +16,14 @@ Logger is a logging library for handling log messages and notifying logger targe
 
 1. Import the necessary classes and interfaces from the `@isacrodriguesdev/logger` package:
 
-```javascript
-import { Logger, ILoggerTarget, ILogger } from "@isacrodriguesdev/logger";
+```typescript
+import { Logger, ILogger } from "@isacrodriguesdev/logger";
 ```
 
-2. Create a class that implements the `ILoggerTarget` interface to define a logger target. For example, here's an implementation using Kafka as the target:
+2. Create a class that implements the `ILogger.Observer` interface to define a logger target. For example, here's an implementation using Kafka as the target:
 
-```javascript
-class KafkaLog implements ILoggerTarget {
+```typescript
+class KafkaLog implements ILogger.Observer {
   private kafka: any; // Import the correct Kafka library here
 
   constructor() {
@@ -31,7 +31,7 @@ class KafkaLog implements ILoggerTarget {
     this.kafka = /* Initialize the connection to Kafka */;
   }
 
-  notify(data: ILogger.Payload): void {
+  update(data: ILogger.Payload): void {
     // Send the log message to the Kafka queue
     this.kafka.sendMessage(data);
   }
@@ -40,7 +40,7 @@ class KafkaLog implements ILoggerTarget {
 
 3. Create an instance of the `Logger` class and register your logger targets:
 
-```javascript
+```typescript
 // Create an instance of the Logger class
 const logger = new Logger();
 
@@ -48,19 +48,23 @@ const logger = new Logger();
 const consoleLog = new ConsoleLog(); // Example using ConsoleLog
 const kafkaLog = new KafkaLog(); // Example using KafkaLog
 
-// Register the logger targets in the Logger instance
-logger.register("console", consoleLog);
-logger.register("kafka", kafkaLog);
+// Attach the logger observers in the Logger instance
+logger.attach("console", consoleLog);
+logger.attach("kafka", kafkaLog);
 ```
 
 4. Use the `notify` method to send log messages to the registered logger targets:
 
-```javascript
+```typescript
 // Create an example log payload
 const payload = {
-  level: "info",
-  message: "This is an informational log message.",
-  additionalInfo: "Some additional information",
+  level: "event",
+  message: "New event created",
+  additionalInfo: {
+    event: "Birthday Party",
+    date: "2023-07-20",
+    location: "City Park",
+  },
   timestamp: Date.now(),
 };
 
@@ -72,8 +76,9 @@ logger.notify(["console", "kafka"], payload);
 
 The `ConsoleLog` target is included by default and does not need to be explicitly registered. You can simply call `logger.notify(["console"]`, payload) to log messages to the console.
 
-## Screenshots  
-![App Screenshot](/example/console-log.png)  
+## Screenshots
+
+![App Screenshot](/example/console-log.png)
 
 ## API
 
@@ -87,24 +92,24 @@ Creates a new instance of the Logger class.
 
 Notifies the specified logger targets with the log data.
 
-- `targets`: An array of target names to notify.
-- `data`: The log data object with the following properties:
+- `types`: An array of target types to notify.
+- `payload`: The log data object with the following properties:
   - `level`: The log level, e.g., `'error'`, `'info'`, `'debug'`.
   - `message`: The log message.
   - `additionalInfo` (optional): Additional information to include in the log.
 
-#### `register(type: string, logger: ILoggerTarget): void`
+#### `attach(type: string, observer: ILogger.Observer): void`
 
 Registers a logger target with the specified type.
 
 - `type`: The type name for the logger target.
-- `logger`: An instance of a logger target implementation.
+- `observer`: An instance of a logger target implementation.
 
 ### ILogger Interface
 
 ```typescript
 export declare abstract class ILogger {
-  public abstract notify(targets: string[], data: ILogger.Payload): void;
-  public abstract register(type: string, logger: ILoggerTarget): void;
+  public abstract notify(types: string[], payload: ILogger.Payload): void;
+  public abstract attach(type: string, observer: ILogger.Observer): void;
 }
 ```

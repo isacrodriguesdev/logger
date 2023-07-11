@@ -1,7 +1,6 @@
 export declare abstract class ILogger {
-  public abstract notify(targets: string[], data: ILogger.Payload): void;
-  public abstract notify<T>(targets: T[], data: ILogger.Payload): void;
-  public abstract register(type: string, logger: ILoggerTarget): void;
+  public abstract notify(types: string[], data: ILogger.Payload): void;
+  public abstract attach(type: string, observer: ILogger.Observer): void;
 }
 
 export declare namespace ILogger {
@@ -28,8 +27,8 @@ export declare namespace ILogger {
     additionalInfo?: any;
     timestamp?: number;
   };
-}
 
-export declare abstract class ILoggerTarget {
-  public abstract notify(data: ILogger.Payload): void;
+  export abstract class Observer {
+    public abstract update(payload: ILogger.Payload): void;
+  }
 }

@@ -1,7 +1,7 @@
-import { ILoggerTarget, ILogger } from "../types";
+import { ILogger } from "../types";
 
-export class ConsoleLog implements ILoggerTarget {
-  notify(payload: ILogger.Payload): void {
+export class ConsoleLog implements ILogger.Observer {
+  update(payload: ILogger.Payload): void {
     const stringifiedData = JSON.stringify(payload);
 
     switch (payload.level) {
