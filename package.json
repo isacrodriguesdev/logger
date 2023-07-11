@@ -8,6 +8,10 @@
     "publish": "tsc && npm publish --access public",
     "build": "node esbuild.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/isacrodriguesdev/logger"
+  },
   "author": "isacrodriguesdev",
   "license": "ISC",
   "keywords": [
