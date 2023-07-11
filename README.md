@@ -72,6 +72,9 @@ logger.notify(["console", "kafka"], payload);
 
 The `ConsoleLog` target is included by default and does not need to be explicitly registered. You can simply call `logger.notify(["console"]`, payload) to log messages to the console.
 
+## Screenshots  
+![App Screenshot](/example/console-log.png)  
+
 ## API
 
 ### Logger Class
